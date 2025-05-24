@@ -17,11 +17,6 @@ func main() {
 		log.Fatal("Tidak ditemukan konten pada gambar.")
 	}
 
-	minX1, minY1, maxX1, maxY1, found1 := findContentBounds(img, bounds)
-	if !found1 {
-		log.Fatal("Tidak ditemukan konten pada gambar.")
-	}
-
 	// Tambahkan padding
 	padding := 1
 	minX = max(0, minX-padding)
@@ -29,20 +24,11 @@ func main() {
 	maxX = min(bounds.Max.X-10, maxX+padding)
 	maxY = min(bounds.Max.Y-158, maxY+padding)
 
-	minX1 = max(5, minX1-padding)
-	minY1 = max(262, minY1-padding)
-	maxX1 = min(bounds.Max.X-1, maxX1+padding)
-	maxY1 = min(bounds.Max.Y-0, maxY1+padding)
-
 	croppedImg := cropImage(img, minX, minY, maxX, maxY)
-	saveImage("result_crop_persegi_hitam.png", croppedImg)
+	saveImage("output.png", croppedImg)
 
-	croppedImg1 := cropImage(img, minX1, minY1, maxX1, maxY1)
-	saveImage("crop_lorem_ipsum.png", croppedImg1)
-
-	log.Println("Gambar berhasil di-crop dan disimpan sebagai result_crop_persegi_hitam.png & crop_lorem_ipsum.png")
+	log.Println("Gambar berhasil di-crop dan disimpan sebagai output.png")
 	log.Printf("Area yang di-crop persegi hitam: X(%d-%d), Y(%d-%d)", minX, maxX, minY, maxY)
-	log.Printf("Area yang di-crop lorem ipsum: X(%d-%d), Y(%d-%d)", minX1, maxX1, minY1, maxY1)
 }
 
 // loadImage membuka dan mendekode file gambar
@@ -67,7 +53,7 @@ func findContentBounds(img image.Image, bounds image.Rectangle) (minX, minY, max
 	minY, maxY = height, 0
 	found = false
 
-	logFile := createLogFile("border.log")
+	logFile := createLogFile("border_area.log")
 	defer func() {
 		if logFile != nil {
 			logFile.Close()
